@@ -1,6 +1,8 @@
 package com.tribal.test.repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +68,7 @@ public class ProjectDAO {
 	public int create(Project project) {
 		project.setId(identitySeed++);
 		this.projects.add(project);
+		sortAndUpdatePriority();
 		return project.getId();
 	}
 
@@ -96,7 +99,34 @@ public class ProjectDAO {
 				break;
 			}
 		}
+		sortAndUpdatePriority();
 	}
+	
+	/**
+	 * Sorts the list using a comparator, and updates the priority values to remove any gaps or duplicate values
+	 */
+	public void sortAndUpdatePriority() {
+		Collections.sort(projects, new Comparator<Project>() {
+
+			@Override
+			public int compare(Project o1, Project o2) {
+				if (o1.getPriority() > o2.getPriority()) {
+					return 1;
+				} else if (o1.getPriority() < o2.getPriority()) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+		});
+		
+		//Now Update the priority values to be unique
+		int prioritySeed = 1;
+		for (Project project : projects) {
+			project.setPriority(prioritySeed++);
+		}
+	}
+	
 
 	/**
 	 * Deletes a record by id
@@ -109,6 +139,7 @@ public class ProjectDAO {
 				break;
 			}
 		}
+		sortAndUpdatePriority();
 	}
 
 }
