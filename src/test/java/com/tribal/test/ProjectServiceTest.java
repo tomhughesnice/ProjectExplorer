@@ -34,5 +34,18 @@ public class ProjectServiceTest {
 			Assert.fail();
 		}
 	}
+	
+	@Test
+	public void updateTest() {
+		Project project = projectService.read(1);
+		Assert.assertNotNull(project);
+		project.setCode("GH12");
+		project.setPriority(100);
+		try {
+			projectService.update(project);
+		} catch(Exception e) {
+			Assert.fail();
+		}
+	}
 
 }

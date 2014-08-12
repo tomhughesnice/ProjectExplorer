@@ -89,4 +89,13 @@ public class ProjectController {
 			return "redirect:/project/list";
 		}
 	}
+	
+	@RequestMapping(value="/delete")
+	public String projectDelete(@RequestParam(value = "id") int id) {
+		log.info("projectDelete request");
+		projectService.delete(id);
+		//Return to the list page
+		return "redirect:/project/list";
+	}
+	
 }

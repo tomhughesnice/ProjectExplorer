@@ -33,7 +33,7 @@
          <td><%=project.getPhase()%></td>
          <td><%=project.getPriority()%></td>
          <td>  
-           <a href="view?id=<%=project.getId()%>"> Edit </a>  
+           <a href="view?id=<%=project.getId()%>">Edit</a> |  <a href="delete?id=<%=project.getId()%>">Delete</a>
          </td>  
        </tr>  
 <%
