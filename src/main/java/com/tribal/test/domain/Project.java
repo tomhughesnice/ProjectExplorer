@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,15 +21,19 @@ public class Project implements Serializable {
 	private int id;
 
 	@NotEmpty
+	@Pattern(regexp = "^[A-Za-z0-9 ]*$")
 	private String name;
 	
 	@NotEmpty
+	@Pattern(regexp = "^[A-Za-z0-9 ]*$")
 	private String code;
 	
 	@NotEmpty
+	@Pattern(regexp = "^[A-Za-z ]*$")
 	private String techLead;
 	
 	@NotEmpty
+	@Pattern(regexp = "^[A-Za-z ]*$")
 	private String projectManager;
 	
 	@DateTimeFormat(pattern="MM/dd/yyyy")

@@ -19,7 +19,7 @@ import com.tribal.test.enums.ProjectPhaseEnum;
 public class ProjectDAO {
 
 	private List<Project> projects = new ArrayList<Project>();
-	int identitySeed = 0;
+	int identitySeed = 1;
 
 	public ProjectDAO() {
 		//Initialise the Projects array with some values;

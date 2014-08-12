@@ -24,12 +24,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tribal.test.domain.Project;
-import com.tribal.test.domain.ProjectValidator;
 import com.tribal.test.enums.ProjectPhaseEnum;
 import com.tribal.test.service.ProjectService;
 
 /**
- * Web controller for all Project related operations
+ * Web controller for all Project related operations.
  * 
  * @author thomash
  */
@@ -42,17 +41,13 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectService projectService;
-	
-//	@InitBinder
-//    protected void initBinder(WebDataBinder binder) {
-//        binder.setValidator(new ProjectValidator());
-//    }
 
 	@RequestMapping("/list")
-	@ModelAttribute("projectList")
-	public List<Project> readAll() {
+	public ModelAndView readAll() {
 		log.info("list request");
-		return projectService.readAll();
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("projectList", projectService.readAll());
+		return mv;
 	}
 
 	@ModelAttribute("phaseList")
@@ -60,8 +55,13 @@ public class ProjectController {
 		return ProjectPhaseEnum.values();
 	}
 
+	/**
+	 * Shows a view to modify or create a new project record
+	 * @param projectId
+	 * @return
+	 */
 	@RequestMapping(value="/view", method=RequestMethod.GET)
-	public ModelAndView projectsView(@RequestParam(value = "id", required=false) Integer projectId) {
+	public ModelAndView projectView(@RequestParam(value = "id", required=false) Integer projectId) {
 		log.info("projectsView request");
 		ModelAndView mv = new ModelAndView();
 		if (projectId != null) {
@@ -69,15 +69,11 @@ public class ProjectController {
 		} else {
 			mv.addObject("project", new Project());
 		}
-		//mv.addObject("phaseList", ProjectPhaseEnum.values());
-		Map<String, String> phases = new HashMap<String, String>();
-		phases.put("Test", "Test");
-		mv.addObject("phaseList", phases);
 		return mv;
 	}
 	
 	@RequestMapping(value="/view", method=RequestMethod.POST)
-	public String projectsSave(@Valid Project project, BindingResult bindingResult) {
+	public String projectSave(@Valid Project project, BindingResult bindingResult) {
 		log.info("projectsSave request");
 		if (bindingResult.hasErrors()) {
 			log.info("Form has errors");
@@ -89,8 +85,8 @@ public class ProjectController {
 			} else {
 				project.setId(projectService.create(project));
 			}
-			return "redirect:/results";
+			//Return to the list page
+			return "redirect:/project/list";
 		}
 	}
-
 }
